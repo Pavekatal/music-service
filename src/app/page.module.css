@@ -26,17 +26,3 @@
   -ms-flex-pack: justify;
   justify-content: space-between;
 }
-
-.playlistTitle__col {
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 2px;
-  color: #696969;
-  text-transform: uppercase;
-}
-
-.col01 {
-  width: 447px;
-}
