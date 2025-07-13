@@ -12,6 +12,12 @@
   margin-bottom: 20px;
 }
 
+.logo__image {
+  width: 113.33px;
+  height: 17px;
+  color: #181818;
+}
+
 .nav__burger {
   width: 20px;
   height: 36px;

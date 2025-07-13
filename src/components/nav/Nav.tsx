@@ -10,7 +10,7 @@ export default function Nav() {
         <Image
           width={250}
           height={170}
-          className={'logo__image'}
+          className={styles.logo__image}
           src="/img/logo.png"
           alt={'logo'}
         />
