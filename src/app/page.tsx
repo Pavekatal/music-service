@@ -1,5 +1,5 @@
-import './page.css';
 import styles from './page.module.css';
+import './page.css';
 import Nav from '@components/nav/Nav';
 import CenterBlock from '@components/centerblock/CenterBlock';
 import Sidebar from '@components/sidebar/Sidebar';

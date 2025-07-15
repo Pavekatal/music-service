@@ -34,7 +34,7 @@ export default function Nav() {
             </Link>
           </li>
           <li className={styles.menu__item}>
-            <Link href="../signin.html" className={styles.menu__link}>
+            <Link href="../sign-in" className={styles.menu__link}>
               Войти
             </Link>
           </li>
