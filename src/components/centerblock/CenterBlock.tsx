@@ -3,11 +3,9 @@ import styles from './centerblock.module.css';
 import Search from '@components/search/Search';
 import Track from '@components/track-card/Track';
 import { data } from '@/data';
-import { getUniqueValuesByKey } from '@utils/helper';
 import FilterTrack from '@components/filter-track/FilterTrack';
 
 export default function CenterBlock() {
-  console.log(getUniqueValuesByKey(data, 'author'));
   return (
     <div className={styles.centerblock}>
       <Search />
