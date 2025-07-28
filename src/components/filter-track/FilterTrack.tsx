@@ -6,6 +6,7 @@ import FilterList from '@components/filter-list/FilterList';
 import { TrackType } from '@shared-types/SharedTypes';
 import { data } from '@/data';
 import classNames from 'classnames';
+import FilterLengthList from '@components/filter-length-of-list/FilterLengthList';
 
 export default function FilterTrack() {
   const [openFilterListModal, setOpenFilterListModal] = useState(false);
@@ -46,6 +47,9 @@ export default function FilterTrack() {
         {openFilterListModal && filterListByKey === 'name' && (
           <FilterList keyOfList={filterListByKey} />
         )}
+        {openFilterListModal && filterListByKey === 'name' && (
+          <FilterLengthList lengthList={filterListByKey} />
+        )}
       </div>
 
       <div className={styles.filter__container}>
@@ -60,6 +64,9 @@ export default function FilterTrack() {
         {openFilterListModal && filterListByKey === 'release_date' && (
           <FilterList keyOfList={filterListByKey} />
         )}
+        {openFilterListModal && filterListByKey === 'release_date' && (
+          <FilterLengthList lengthList={filterListByKey} />
+        )}
       </div>
 
       <div className={styles.filter__container}>
@@ -73,6 +80,9 @@ export default function FilterTrack() {
         </div>
         {openFilterListModal && filterListByKey === 'genre' && (
           <FilterList keyOfList={filterListByKey} />
+        )}
+        {openFilterListModal && filterListByKey === 'genre' && (
+          <FilterLengthList lengthList={filterListByKey} />
         )}
       </div>
     </div>
