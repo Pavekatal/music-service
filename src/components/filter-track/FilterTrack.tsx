@@ -7,6 +7,7 @@ import { TrackType } from '@shared-types/SharedTypes';
 import { data } from '@/data';
 import classNames from 'classnames';
 import FilterLengthList from '@components/filter-length-of-list/FilterLengthList';
+import styled from '../filter-list/filterlist.module.css';
 
 export default function FilterTrack() {
   const [openFilterListModal, setOpenFilterListModal] = useState(false);
@@ -62,11 +63,18 @@ export default function FilterTrack() {
           году выпуска
         </div>
         {openFilterListModal && filterListByKey === 'release_date' && (
-          <FilterList keyOfList={filterListByKey} />
+          // <FilterList keyOfList={filterListByKey} />
+          <div className={styled.filter__content}>
+            <div className={styled.filter__list}>
+              <p className={styled.filter__track}>Сначала новые</p>
+              <p className={styled.filter__track}>Сначала старые</p>
+              <p className={styled.filter__track}>По умолчанию</p>
+            </div>
+          </div>
         )}
-        {openFilterListModal && filterListByKey === 'release_date' && (
+        {/* {openFilterListModal && filterListByKey === 'release_date' && (
           <FilterLengthList lengthList={filterListByKey} />
-        )}
+        )} */}
       </div>
 
       <div className={styles.filter__container}>
