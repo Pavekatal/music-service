@@ -5,9 +5,11 @@ import styles from './filtertrack.module.css';
 import FilterList from '@components/filter-list/FilterList';
 import { TrackType } from '@shared-types/SharedTypes';
 import { data } from '@/data';
+import classNames from 'classnames';
 
 export default function FilterTrack() {
   const [openFilterListModal, setOpenFilterListModal] = useState(false);
+  const [activeFilter, setActiveFilter] = useState(false);
 
   const trackKeys = Object.keys(data) as (keyof TrackType)[];
   const [filterListByKey, setFilterListByKey] = useState<keyof TrackType>(
@@ -16,11 +18,13 @@ export default function FilterTrack() {
 
   const onOpenFilterList = (key: keyof TrackType) => {
     setFilterListByKey(key);
+    setActiveFilter(true);
 
     if (!openFilterListModal) {
       setOpenFilterListModal(true);
     } else if (openFilterListModal && filterListByKey === key) {
       setOpenFilterListModal(false);
+      setActiveFilter(false);
     } else {
       setFilterListByKey(key);
     }
@@ -33,7 +37,9 @@ export default function FilterTrack() {
       <div className={styles.filter__container}>
         <div
           onClick={() => onOpenFilterList('name')}
-          className={styles.filter__button}
+          className={classNames(styles.filter__button, {
+            [styles.active]: activeFilter && filterListByKey === 'name',
+          })}
         >
           исполнителю
         </div>
@@ -45,7 +51,9 @@ export default function FilterTrack() {
       <div className={styles.filter__container}>
         <div
           onClick={() => onOpenFilterList('release_date')}
-          className={styles.filter__button}
+          className={classNames(styles.filter__button, {
+            [styles.active]: activeFilter && filterListByKey === 'release_date',
+          })}
         >
           году выпуска
         </div>
@@ -57,7 +65,9 @@ export default function FilterTrack() {
       <div className={styles.filter__container}>
         <div
           onClick={() => onOpenFilterList('genre')}
-          className={styles.filter__button}
+          className={classNames(styles.filter__button, {
+            [styles.active]: activeFilter && filterListByKey === 'genre',
+          })}
         >
           жанру
         </div>

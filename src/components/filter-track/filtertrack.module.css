@@ -37,4 +37,14 @@
   padding: 6px 20px;
   margin-bottom: 10px;
   cursor: pointer;
+
+  &:hover {
+    border: 1px solid rgb(154, 72, 241);
+    color: rgb(182, 114, 255);
+  }
+}
+
+.active {
+  border: 1px solid rgb(154, 72, 241);
+  color: rgb(182, 114, 255);
 }

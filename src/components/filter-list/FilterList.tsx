@@ -14,7 +14,9 @@ export default function FilterList({ keyOfList }: FilterProp) {
     <div className={styles.filter__content}>
       <div className={styles.filter__list}>
         {filteredList.map((item) => (
-          <p key={item}>{item}</p>
+          <p className={styles.filter__track} key={item}>
+            {item}
+          </p>
         ))}
       </div>
     </div>

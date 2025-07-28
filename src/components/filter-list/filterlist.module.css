@@ -35,3 +35,19 @@
     border-radius: 10px;
   }
 }
+
+.filter__track {
+  font-size: 20px;
+
+  &:hover {
+    color: rgb(182, 114, 255);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &:focus {
+    color: rgb(182, 114, 255);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
