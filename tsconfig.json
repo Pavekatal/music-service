@@ -21,7 +21,9 @@
     "paths": {
       // "@/*": ["./src/*"],
       "@components/*": ["./src/components/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@shared-types/*": ["./src/shared-types/*"],
+      "@/data": ["./src/data.ts"]
     }
   },
   "include": [

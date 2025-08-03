@@ -40,24 +40,3 @@
   height: 1px;
   background-color: #d3d3d3;
 }
-
-.nav__menu {
-  display: block;
-  visibility: visible;
-}
-
-.menu__list {
-  padding: 18px 0 10px 0;
-}
-
-.menu__item {
-  padding: 5px 0;
-  margin-bottom: 16px;
-}
-
-.menu__link {
-  color: #ffffff;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-}
