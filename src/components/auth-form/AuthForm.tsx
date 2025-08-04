@@ -3,7 +3,11 @@ import classnames from 'classnames';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function AuthForm({ isSignUp }) {
+type AuthFormProp = {
+  isSignUp: boolean;
+};
+
+export default function AuthForm({ isSignUp }: AuthFormProp) {
   return (
     <>
       <div className={styles.wrapper}>
