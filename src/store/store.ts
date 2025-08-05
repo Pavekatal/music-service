@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { trackSliceReducer } from './features/trackSlice';
-import { useDispatch } from 'react-redux';
+import { TypedUseSelectorHook, useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useStore } from 'react-redux';
 
@@ -20,6 +20,10 @@ type RootState = ReturnType<AppStore['getState']>;
 type AppDispatch = AppStore['dispatch'];
 
 // используем во всем приложении вместо простоых \`useDispatch\` и \`useSelector\`
-export const useAppDispatch = useDispatch.withTypes<AppDispatch>(); // чтобы вызывать редьюсеры
-export const useAppSelector = useSelector.withTypes<RootState>(); // чтобы получать состояние в любом компоненте
-export const useAppSrore = useStore.withTypes<AppStore>(); //
+// export const useAppDispatch = useDispatch.withTypes<AppDispatch>(); // чтобы вызывать редьюсеры
+// export const useAppSelector = useSelector.withTypes<RootState>(); // чтобы получать состояние в любом компоненте
+// export const useAppSrore = useStore.withTypes<AppStore>(); //
+
+export const useAppDispatch: () => AppDispatch = useDispatch; // чтобы вызывать редьюсеры
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector; // чтобы получать состояние в любом компоненте
+export const AppDispatch: () => AppStore = useStore;
