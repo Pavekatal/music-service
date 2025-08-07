@@ -5,14 +5,16 @@ import { TrackType } from '@shared-types/SharedTypes';
 type initialStateType = {
   currentTrack: null | TrackType; // состояние для текущего трека
   isPlay: boolean;
+  currentTime: number;
 };
 
 // создаем состояние по умолчанию
 const initialState: initialStateType = {
   currentTrack: null,
   isPlay: false,
+  currentTime: 0,
 };
-// создаем срез состояния создаем срез с именем tracks, включающий в себя состояние по умолчанию initialState и редьюсер setCurrentTrack
+// создаем срез состояния с именем tracks, включающий в себя состояние по умолчанию initialState и редьюсеры setCurrentTrack, setIsPlay:
 const trackSlice = createSlice({
   name: 'tracks',
   initialState,
@@ -23,10 +25,14 @@ const trackSlice = createSlice({
     setIsPlay: (state, action: PayloadAction<boolean>) => {
       state.isPlay = action.payload;
     },
+    setCurrentTime: (state, action: PayloadAction<number>) => {
+      state.currentTime = action.payload;
+    },
   },
 });
 
 // экспортируем редюсер - функцию с помощью деструктуризации
-export const { setCurrentTrack, setIsPlay } = trackSlice.actions;
+export const { setCurrentTrack, setIsPlay, setCurrentTime } =
+  trackSlice.actions;
 // экспортируем редюсеры
 export const trackSliceReducer = trackSlice.reducer;
