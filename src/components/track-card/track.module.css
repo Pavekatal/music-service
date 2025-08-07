@@ -58,6 +58,31 @@
   stroke: #4e4e4e;
 }
 
+.track__playback {
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: #b672ff;
+}
+
+.track__pulse {
+  animation: pulse 2s infinite;
+  box-shadow: 0 0 0 #b672ff;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 #b672ff;
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 2px 1px #b672ff;
+    opacity: 1;
+  }
+}
+
 .track__titleLink {
   font-style: normal;
   font-weight: 400;

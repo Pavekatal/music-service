@@ -10,7 +10,6 @@ export default function Nav() {
   return (
     <nav className={styles.main__nav}>
       <div className={styles.nav__logo}>
-        {/*TODO: img –> Image*/}
         <Image
           width={250}
           height={170}

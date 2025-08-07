@@ -332,3 +332,7 @@
   position: relative;
   margin-top: -7px;
 }
+
+.audio {
+  display: none;
+}
