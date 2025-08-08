@@ -17,15 +17,20 @@ export default function Bar() {
   const dispatch = useAppDispatch();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
   const [isLoop, setIsLoop] = useState(false);
+  const [isLoadedTrack, setIsLoadedTrack] = useState(false);
+  const [volumeTrack, setVolumeTrack] = useState(20);
 
   useEffect(() => {
+    setIsLoadedTrack(false);
     if (currentTrack && isPlay && audioRef.current) {
+      audioRef.current.volume = volumeTrack / 100;
       audioRef.current.play();
     } else if (audioRef.current) {
       audioRef.current.pause();
     }
-  }, [currentTrack, isPlay]);
+  }, [currentTrack, isPlay, volumeTrack]);
 
   if (!currentTrack) return <></>;
 
@@ -56,6 +61,22 @@ export default function Bar() {
     }
   };
 
+  const onLoadedTrack = () => {
+    if (audioRef.current) {
+      setIsLoadedTrack(true);
+      audioRef.current.play();
+      dispatch(setIsPlay(true));
+    }
+  };
+
+  const onChangeVolumeTrack = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentVolume = +e.target.value;
+    setVolumeTrack(currentVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = currentVolume / 100;
+    }
+  };
+
   const notYetImplemented = () => {
     alert('Еще не реализовано');
   };
@@ -67,8 +88,10 @@ export default function Bar() {
         controls
         src={currentTrack?.track_file}
         className={styles.audio}
-        loop={true}
+        loop={isLoop}
         onTimeUpdate={onTimeUpdate}
+        onLoadedMetadata={onLoadedTrack}
+        onEnded={() => console.log('next')}
       ></audio>
       <div className={styles.bar__playerPanelProgress}>
         <span className={stylesImport.track__timeText}>
@@ -79,7 +102,7 @@ export default function Bar() {
         <ProgressBar
           max={audioRef.current?.duration || 0}
           step={0.01}
-          readOnly={false}
+          readOnly={!isLoadedTrack}
           value={currentTime}
           onChange={onChangeProgress}
         />
@@ -199,7 +222,11 @@ export default function Bar() {
                   )}
                   type="range"
                   name="range"
-                  onChange={notYetImplemented}
+                  min={0}
+                  max={100}
+                  step={0.01}
+                  value={volumeTrack}
+                  onChange={onChangeVolumeTrack}
                 />
               </div>
             </div>
