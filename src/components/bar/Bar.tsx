@@ -96,6 +96,10 @@ export default function Bar() {
     dispatch(setIsShuffle());
   };
 
+  const endedTrack = () => {
+    dispatch(setNextTrack());
+  };
+
   const notYetImplemented = () => {
     alert('Еще не реализовано');
   };
@@ -110,7 +114,7 @@ export default function Bar() {
         loop={isLoop}
         onTimeUpdate={onTimeUpdate}
         onLoadedMetadata={onLoadedTrack}
-        onEnded={() => console.log('next')}
+        onEnded={endedTrack}
       ></audio>
       <div className={styles.bar__playerPanelProgress}>
         <span className={stylesImport.track__timeText}>
@@ -227,7 +231,7 @@ export default function Bar() {
           </div>
           <div className={styles.bar__volumeBlock}>
             <div className={styles.volume__content}>
-              <div className={styles.volume__image} onClick={notYetImplemented}>
+              <div className={styles.volume__image}>
                 <svg className={styles.volume__svg}>
                   <use xlinkHref="/img/icon/sprite.svg#icon-volume"></use>
                 </svg>
