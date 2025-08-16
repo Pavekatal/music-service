@@ -71,6 +71,7 @@
 
 .player__btnPrev {
   margin-right: 23px;
+  cursor: pointer;
 }
 
 .player__btnPrevSvg {
@@ -109,6 +110,7 @@
 .player__btnNext {
   margin-right: 28px;
   fill: #a53939;
+  cursor: pointer;
 }
 
 .player__btnNextSvg {
