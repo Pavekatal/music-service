@@ -3,12 +3,14 @@ import { trackSliceReducer } from './features/trackSlice';
 import { TypedUseSelectorHook, useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useStore } from 'react-redux';
+import { userSliceReduser } from './features/userSlice';
 
 // создаем хранилище makeStore с использованием метода configureStore
 export const makeStore = () => {
   return configureStore({
     reducer: combineReducers({
       tracks: trackSliceReducer,
+      users: userSliceReduser,
     }),
   });
 };

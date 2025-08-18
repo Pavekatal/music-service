@@ -10,3 +10,9 @@ export type TrackType = {
   track_file: string;
   stared_user: string[];
 };
+
+export type UserType = {
+  email: string;
+  username: string;
+  _id: number;
+};

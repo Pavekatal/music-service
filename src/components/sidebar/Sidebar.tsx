@@ -1,13 +1,25 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './sidebar.module.css';
+import { logout } from '../../store/features/userSlice';
+import { useRouter } from 'next/navigation';
 
 export default function Sidebar() {
+  const router = useRouter();
+
+  const onClickLogout = () => {
+    logout();
+    localStorage.removeItem('user');
+    router.push('/auth/sign-in');
+  };
+
   return (
     <div className={styles.main__sidebar}>
       <div className={styles.sidebar__personal}>
         <p className={styles.sidebar__personalName}>Sergey.Ivanov</p>
-        <div className={styles.sidebar__icon}>
+        <div className={styles.sidebar__icon} onClick={onClickLogout}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#logout"></use>
           </svg>
