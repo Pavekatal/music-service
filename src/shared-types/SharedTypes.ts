@@ -11,6 +11,12 @@ export type TrackType = {
   stared_user: string[];
 };
 
+export type SelectionTrackType = {
+  _id: number;
+  name: string;
+  items: number[];
+};
+
 export type UserType = {
   email: string;
   username: string;

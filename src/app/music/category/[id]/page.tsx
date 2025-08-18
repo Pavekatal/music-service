@@ -5,25 +5,38 @@ import styles from './category.module.css';
 import Search from '@components/search/Search';
 import FilterTrack from '@components/filter-track/FilterTrack';
 import classnames from 'classnames';
-import { data } from '@/data';
 import Track from '@components/track-card/Track';
+import { useEffect, useState } from 'react';
+import {
+  getSelectionTracks,
+  getTracks,
+} from '../../../../services/tracks/tracksApi';
+import { SelectionTrackType, TrackType } from '@shared-types/SharedTypes';
 
 export default function CategoryPage() {
   const params = useParams<{ id: string }>();
+  const [allTracks, setAllTracks] = useState<TrackType[]>([]);
+  const [selectionTracks, setSelectionTracks] =
+    useState<SelectionTrackType | null>(null);
+
+  useEffect(() => {
+    getTracks().then((res) => setAllTracks(res));
+    getSelectionTracks(params.id).then((res) => setSelectionTracks(res));
+  }, [params]);
+  console.log(selectionTracks);
+
+  const tracks = selectionTracks
+    ? allTracks.filter((track) => selectionTracks.items.includes(track._id))
+    : [];
+
+  console.log('tracks:', tracks);
+
   return (
     <>
       <div className={styles.centerblock}>
         <Search />
-        {params.id === '1' ? (
-          <h2 className={styles.centerblock__h2}>Плейлист дня</h2>
-        ) : null}
-        {params.id === '2' ? (
-          <h2 className={styles.centerblock__h2}>100 танцевальных хитов</h2>
-        ) : null}
-        {params.id === '3' ? (
-          <h2 className={styles.centerblock__h2}>Инди-заряд</h2>
-        ) : null}
-        <FilterTrack />
+        <h2 className={styles.centerblock__h2}>{selectionTracks?.name}</h2>
+        <FilterTrack tracks={tracks} />
         <div className={styles.centerblock__content}>
           <div className={styles.content__title}>
             <div
@@ -50,8 +63,8 @@ export default function CategoryPage() {
             </div>
           </div>
           <div className={styles.content__playlist}>
-            {data.map((track) => (
-              <Track key={track._id} track={track} playlist={data} />
+            {tracks.map((track) => (
+              <Track key={track._id} track={track} playlist={tracks} />
             ))}
           </div>
         </div>
