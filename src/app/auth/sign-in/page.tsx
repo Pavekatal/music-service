@@ -16,7 +16,7 @@ export default function SignInPage() {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector((state) => state.users.currentUser);
   const [authField, setAuthField] = useState({ email: '', password: '' });
-  // const [errors, setErrors] = useState({ email: false, password: false });
+
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
