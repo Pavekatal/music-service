@@ -5,8 +5,10 @@ import Image from 'next/image';
 import styles from './sidebar.module.css';
 import { logout } from '../../store/features/userSlice';
 import { useRouter } from 'next/navigation';
+import { useAppSelector } from '../../store/store';
 
 export default function Sidebar() {
+  const currentUser = useAppSelector((state) => state.users.currentUser);
   const router = useRouter();
 
   const onClickLogout = () => {
@@ -18,7 +20,7 @@ export default function Sidebar() {
   return (
     <div className={styles.main__sidebar}>
       <div className={styles.sidebar__personal}>
-        <p className={styles.sidebar__personalName}>Sergey.Ivanov</p>
+        <p className={styles.sidebar__personalName}>{currentUser?.username}</p>
         <div className={styles.sidebar__icon} onClick={onClickLogout}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#logout"></use>

@@ -2,15 +2,20 @@ import classnames from 'classnames';
 import styles from './centerblock.module.css';
 import Search from '@components/search/Search';
 import Track from '@components/track-card/Track';
-import { data } from '@/data';
 import FilterTrack from '@components/filter-track/FilterTrack';
+import { TrackType } from '@shared-types/SharedTypes';
 
-export default function CenterBlock() {
+type centerBlockProps = {
+  tracks: TrackType[];
+};
+
+export default function CenterBlock({ tracks }: centerBlockProps) {
+  console.log('tracks from centerblock', tracks);
   return (
     <div className={styles.centerblock}>
       <Search />
       <h2 className={styles.centerblock__h2}>Треки</h2>
-      <FilterTrack />
+      <FilterTrack tracks={tracks} />
       <div className={styles.centerblock__content}>
         <div className={styles.content__title}>
           <div className={classnames(styles.playlistTitle__col, styles.col01)}>
@@ -29,8 +34,8 @@ export default function CenterBlock() {
           </div>
         </div>
         <div className={styles.content__playlist}>
-          {data.map((track) => (
-            <Track key={track._id} track={track} playlist={data} />
+          {tracks.map((track) => (
+            <Track key={track._id} track={track} playlist={tracks} />
           ))}
         </div>
       </div>
