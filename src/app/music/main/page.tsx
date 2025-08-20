@@ -6,12 +6,17 @@ import { getTracks } from '../../../services/tracks/tracksApi';
 import styles from './page.module.css';
 import { TrackType } from '@shared-types/SharedTypes';
 import { AxiosError } from 'axios';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { setIsLoading } from '../../../store/features/loadingSlice';
 
 export default function Home() {
+  const dispatch = useAppDispatch();
   const [tracks, setTracks] = useState<TrackType[]>([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const isLoading = useAppSelector((state) => state.loading.isLoading);
 
   useEffect(() => {
+    dispatch(setIsLoading(true));
     getTracks()
       .then((res) => {
         setTracks(res);
@@ -27,13 +32,15 @@ export default function Home() {
             );
           } else {
             setErrorMessage(
-              'Неизвестная ошибка. Попробуйте перезарузить страницу',
+              'Неизвестная ошибка. Попробуйте перезагрузить страницу',
             );
           }
         }
-      });
-  }, []);
+      })
+      .finally(() => dispatch(setIsLoading(false)));
+  }, [dispatch]);
 
+  console.log('isLoading from main:', isLoading);
   return (
     <div>
       <CenterBlock tracks={tracks} />

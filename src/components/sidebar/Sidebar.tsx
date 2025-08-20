@@ -6,10 +6,28 @@ import styles from './sidebar.module.css';
 import { logout } from '../../store/features/userSlice';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '../../store/store';
+import Loader from '@components/loader/Loader';
+import { useEffect, useState } from 'react';
+import { UserType } from '@shared-types/SharedTypes';
 
 export default function Sidebar() {
-  const currentUser = useAppSelector((state) => state.users.currentUser);
+  // const currentUser = useAppSelector((state) => state.users.currentUser);
+  const isLoading = useAppSelector((state) => state.loading.isLoading);
   const router = useRouter();
+
+  const [user, setUser] = useState<UserType | null>(null);
+
+  useEffect(() => {
+    const userDataFromLS = localStorage.getItem('user');
+    if (userDataFromLS) {
+      try {
+        const parsedUser: UserType = JSON.parse(userDataFromLS);
+        setUser(parsedUser);
+      } catch (error) {
+        console.log('Ошибка парсинга user из localStorage', error);
+      }
+    }
+  }, []);
 
   const onClickLogout = () => {
     logout();
@@ -20,7 +38,14 @@ export default function Sidebar() {
   return (
     <div className={styles.main__sidebar}>
       <div className={styles.sidebar__personal}>
-        <p className={styles.sidebar__personalName}>{currentUser?.username}</p>
+        {isLoading ? (
+          <Loader width={100} height={24} style={{ marginRight: '15px' }} />
+        ) : user ? (
+          <p className={styles.sidebar__personalName}>{user.username}</p>
+        ) : (
+          <p className={styles.sidebar__personalName}>Гость</p>
+        )}
+
         <div className={styles.sidebar__icon} onClick={onClickLogout}>
           <svg>
             <use xlinkHref="/img/icon/sprite.svg#logout"></use>
@@ -29,39 +54,49 @@ export default function Sidebar() {
       </div>
       <div className={styles.sidebar__block}>
         <div className={styles.sidebar__list}>
-          <div className={styles.sidebar__item}>
-            <Link className={styles.sidebar__link} href="/music/category/2">
-              <Image
-                className={styles.sidebar__img}
-                src="/img/playlist01.png"
-                alt="day's playlist"
-                width={250}
-                height={150}
-              />
-            </Link>
-          </div>
-          <div className={styles.sidebar__item}>
-            <Link className={styles.sidebar__link} href="/music/category/3">
-              <Image
-                className={styles.sidebar__img}
-                src="/img/playlist02.png"
-                alt="day's playlist"
-                width={250}
-                height={150}
-              />
-            </Link>
-          </div>
-          <div className={styles.sidebar__item}>
-            <Link className={styles.sidebar__link} href="/music/category/4">
-              <Image
-                className={styles.sidebar__img}
-                src="/img/playlist03.png"
-                alt="day's playlist"
-                width={250}
-                height={150}
-              />
-            </Link>
-          </div>
+          {isLoading ? (
+            <>
+              <Loader width={250} height={150} />
+              <Loader width={250} height={150} />
+              <Loader width={250} height={150} />
+            </>
+          ) : (
+            <>
+              <div className={styles.sidebar__item}>
+                <Link className={styles.sidebar__link} href="/music/category/2">
+                  <Image
+                    className={styles.sidebar__img}
+                    src="/img/playlist01.png"
+                    alt="day's playlist"
+                    width={250}
+                    height={150}
+                  />
+                </Link>
+              </div>
+              <div className={styles.sidebar__item}>
+                <Link className={styles.sidebar__link} href="/music/category/3">
+                  <Image
+                    className={styles.sidebar__img}
+                    src="/img/playlist02.png"
+                    alt="day's playlist"
+                    width={250}
+                    height={150}
+                  />
+                </Link>
+              </div>
+              <div className={styles.sidebar__item}>
+                <Link className={styles.sidebar__link} href="/music/category/4">
+                  <Image
+                    className={styles.sidebar__img}
+                    src="/img/playlist03.png"
+                    alt="day's playlist"
+                    width={250}
+                    height={150}
+                  />
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

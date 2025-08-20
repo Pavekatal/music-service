@@ -15,12 +15,14 @@ import {
 } from '../../store/features/trackSlice';
 import { getTimePanel } from '@utils/helper';
 import ProgressBar from '@components/progress-bar/ProgressBar';
+import Loader from '@components/loader/Loader';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlay = useAppSelector((state) => state.tracks.isPlay);
   const currentTime = useAppSelector((state) => state.tracks.currentTime);
   const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
+  const isLoading = useAppSelector((state) => state.loading.isLoading);
   const dispatch = useAppDispatch();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -188,19 +190,31 @@ export default function Bar() {
             <div className={styles.player__trackPlay}>
               <div className={styles.trackPlay__contain}>
                 <div className={styles.trackPlay__image}>
-                  <svg className={styles.trackPlay__svg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
-                  </svg>
+                  {isLoading ? (
+                    <Loader width={51} height={51} />
+                  ) : (
+                    <svg className={styles.trackPlay__svg}>
+                      <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
+                    </svg>
+                  )}
                 </div>
                 <div className={styles.trackPlay__author}>
-                  <Link className={styles.trackPlay__authorLink} href="">
-                    {currentTrack.name}
-                  </Link>
+                  {isLoading ? (
+                    <Loader width={59} height={15} />
+                  ) : (
+                    <Link className={styles.trackPlay__authorLink} href="">
+                      {currentTrack.name}
+                    </Link>
+                  )}
                 </div>
                 <div className={styles.trackPlay__album}>
-                  <Link className={styles.trackPlay__albumLink} href="">
-                    {currentTrack.author}
-                  </Link>
+                  {isLoading ? (
+                    <Loader width={59} height={15} />
+                  ) : (
+                    <Link className={styles.trackPlay__albumLink} href="">
+                      {currentTrack.author}
+                    </Link>
+                  )}
                 </div>
               </div>
 

@@ -11,20 +11,19 @@ import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { setCurrentUser } from '../../../store/features/userSlice';
+import { setIsLoading } from '../../../store/features/loadingSlice';
 
 export default function SignInPage() {
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector((state) => state.users.currentUser);
+  const isLoading = useAppSelector((state) => state.loading.isLoading);
   const [authField, setAuthField] = useState({ email: '', password: '' });
-
   const [errorMessage, setErrorMessage] = useState('');
+  // const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const onChangeUserData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setAuthField({ ...authField, [name]: value });
-    console.log(authField);
   };
 
   const onSubmitUserData = (
@@ -37,39 +36,38 @@ export default function SignInPage() {
       return setErrorMessage('Заполните все поля');
     }
 
+    dispatch(setIsLoading(true));
+    // setIsLoading(true);
     login(authField)
       .then((res) => {
-        console.log(res.data);
-        dispatch(setCurrentUser(res.data));
-        localStorage.setItem('user', JSON.stringify(res.data));
+        console.log(res);
+        dispatch(setCurrentUser(res));
+        localStorage.setItem('user', JSON.stringify(res));
         router.push('/music/main');
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
           if (error.response) {
-            // Запрос был сделан, и сервер ответил кодом состояния, который
-            // выходит за пределы 2xx
             console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
             setErrorMessage(error.response.data.message);
           } else if (error.request) {
-            // Запрос был сделан, но ответ не получен
-            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
-            // http.ClientRequest в node.js
             console.log(error.request);
             setErrorMessage(
               'Похоже, что-то с интернет-подключением... Попробуйте позже',
             );
           } else {
-            // Произошло что-то при настройке запроса, вызвавшее ошибку
             console.log('Error', error.message);
             setErrorMessage('Возникла неизвестная ошибка, попробуйте позже');
           }
         }
+      })
+      .finally(() => {
+        dispatch(setIsLoading(false));
+        // setIsLoading(false);
       });
   };
-  console.log('currentUser:', currentUser);
+  console.log('isLoading после нажатия кнопки:', isLoading);
+
   return (
     <>
       {/* <AuthForm isSignUp={false} /> */}
@@ -98,7 +96,13 @@ export default function SignInPage() {
         onChange={onChangeUserData}
       />
       <div className={styles.errorContainer}>{errorMessage}</div>
-      <button className={styles.modal__btnEnter} onClick={onSubmitUserData}>
+      <button
+        className={classNames(styles.modal__btnEnter, {
+          [styles.loading__btn]: isLoading,
+        })}
+        disabled={isLoading}
+        onClick={onSubmitUserData}
+      >
         Войти
       </button>
       <Link href={'/auth/sign-up'} className={styles.modal__btnSignup}>

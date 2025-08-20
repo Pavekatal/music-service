@@ -4,6 +4,7 @@ import { TypedUseSelectorHook, useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useStore } from 'react-redux';
 import { userSliceReduser } from './features/userSlice';
+import { loadingSliceReducer } from './features/loadingSlice';
 
 // создаем хранилище makeStore с использованием метода configureStore
 export const makeStore = () => {
@@ -11,6 +12,7 @@ export const makeStore = () => {
     reducer: combineReducers({
       tracks: trackSliceReducer,
       users: userSliceReduser,
+      loading: loadingSliceReducer,
     }),
   });
 };

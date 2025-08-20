@@ -9,12 +9,13 @@ import classNames from 'classnames';
 import { useState } from 'react';
 import { registration } from '../../../services/auth/authApi';
 import { AxiosError } from 'axios';
-import { useAppDispatch } from '../../../store/store';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { useRouter } from 'next/navigation';
 import { setCurrentUser } from '../../../store/features/userSlice';
 
 export default function SignUpPage() {
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector((state) => state.loading.isLoading);
   const router = useRouter();
   const [dataField, setDataField] = useState({
     email: '',
@@ -55,39 +56,42 @@ export default function SignUpPage() {
 
     registration(dataToSend)
       .then((res) => {
-        console.log(res.data);
-        dispatch(setCurrentUser(res.data.result));
-        localStorage.setItem('user', JSON.stringify(res.data.result));
+        console.log(res);
+        dispatch(setCurrentUser(res));
+        localStorage.setItem('user', JSON.stringify(res));
         alert('Регистрация прошла успешно!');
         router.push('/music/main');
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
           if (error.response) {
-            // Запрос был сделан, и сервер ответил кодом состояния, который
-            // выходит за пределы 2xx
+            const errorResponseData = error.response.data;
+            if (errorResponseData.data && errorResponseData.data.errors) {
+              const errors = errorResponseData.data.errors;
+              if (errors.email) {
+                setErrorMessage(errors.email.join(' '));
+                return;
+              }
+              if (errors.username) {
+                setErrorMessage(errors.username.join(' '));
+                return;
+              }
+              if (errors.password) {
+                setErrorMessage(errors.password.join(' '));
+                return;
+              }
+            }
+
+            if (errorResponseData.message) {
+              setErrorMessage(errorResponseData.message);
+            }
             console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-            if (error.response.data.data.errors.email) {
-              setErrorMessage(error.response.data.data.errors.email);
-            }
-            if (error.response.data.data.errors.username) {
-              setErrorMessage(error.response.data.data.errors.username);
-            }
-            if (error.response.data.data.errors.password) {
-              setErrorMessage(error.response.data.data.errors.password);
-            }
           } else if (error.request) {
-            // Запрос был сделан, но ответ не получен
-            // `error.request`- это экземпляр XMLHttpRequest в браузере и экземпляр
-            // http.ClientRequest в node.js
             console.log(error.request);
             setErrorMessage(
               'Похоже, что-то с интернет-подключением... Попробуйте позже',
             );
           } else {
-            // Произошло что-то при настройке запроса, вызвавшее ошибку
             console.log('Error', error.message);
             setErrorMessage('Возникла неизвестная ошибка, попробуйте позже');
           }
@@ -141,7 +145,13 @@ export default function SignUpPage() {
         onChange={onChangeDataField}
       />
       <div className={styles.errorContainer}>{errorMessage}</div>
-      <button className={styles.modal__btnSignupEnt} onClick={onSubmitUserData}>
+      <button
+        className={classNames(styles.modal__btnSignupEnt, {
+          [styles.loading__btn]: isLoading,
+        })}
+        onClick={onSubmitUserData}
+        disabled={isLoading}
+      >
         Зарегистрироваться
       </button>
     </>
