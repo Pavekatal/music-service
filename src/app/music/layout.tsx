@@ -69,6 +69,34 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
         .finally(() => {
           dispatch(setIsLoading(false));
         });
+    } else {
+      setSelectionTracks(null);
+      dispatch(setIsLoading(true));
+      getTracks()
+        .then((res) => {
+          setAllTracks(res);
+          dispatch(setCurrentPlaylist(res));
+          dispatch(setTitlePlaylist('Треки'));
+        })
+        .catch((error) => {
+          if (error instanceof AxiosError) {
+            if (error.response) {
+              setErrorMessage(error.response.data);
+              console.log(error.response.data);
+            } else if (error.request) {
+              setErrorMessage(
+                'Похоже, что-то с интернет-соединением. Попробуйте позже',
+              );
+            } else {
+              setErrorMessage(
+                'Неизвестная ошибка. Попробуйте перезагрузить страницу',
+              );
+            }
+          }
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
     }
   }, [params.id, dispatch]);
 

@@ -41,9 +41,22 @@ const trackSlice = createSlice({
     },
     setCurrentPlaylist: (state, action: PayloadAction<TrackType[]>) => {
       state.currentPlaylist = action.payload;
-      state.shuffledPlaylist = [...state.currentPlaylist].sort(
+      const shuffled = [...state.currentPlaylist].sort(
         () => Math.random() - 0.5,
       );
+
+      if (state.currentPlaylist) {
+        const currentIndexInShuffled = shuffled.findIndex(
+          (track) => track._id === state.currentTrack?._id,
+        );
+
+        if (currentIndexInShuffled !== -1 && currentIndexInShuffled !== 0) {
+          const [currentTrackItem] = shuffled.splice(currentIndexInShuffled, 1);
+          shuffled.unshift(currentTrackItem);
+        }
+      }
+
+      state.shuffledPlaylist = shuffled;
     },
     setTitlePlaylist: (state, action: PayloadAction<string>) => {
       state.titlePlaylist = action.payload;
