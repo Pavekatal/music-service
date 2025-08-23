@@ -35,7 +35,7 @@ export default function NotFound() {
           <p className={styles.text}>
             Возможно, она была удалена или перенесена на другой адрес
           </p>
-          <Link href={'/'}>
+          <Link href={'/music/main'}>
             <button className={styles.modal__btnEnter}>
               Вернуться на главную
             </button>

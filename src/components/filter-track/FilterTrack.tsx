@@ -4,16 +4,19 @@ import { useState } from 'react';
 import styles from './filtertrack.module.css';
 import FilterList from '@components/filter-list/FilterList';
 import { TrackType } from '@shared-types/SharedTypes';
-import { data } from '@/data';
 import classNames from 'classnames';
 import FilterLengthList from '@components/filter-length-of-list/FilterLengthList';
 import styled from '../filter-list/filterlist.module.css';
 
-export default function FilterTrack() {
+type FilterTrackProp = {
+  tracks: TrackType[];
+};
+
+export default function FilterTrack({ tracks }: FilterTrackProp) {
   const [openFilterListModal, setOpenFilterListModal] = useState(false);
   const [activeFilter, setActiveFilter] = useState(false);
 
-  const trackKeys = Object.keys(data) as (keyof TrackType)[];
+  const trackKeys = Object.keys(tracks) as (keyof TrackType)[];
   const [filterListByKey, setFilterListByKey] = useState<keyof TrackType>(
     trackKeys[1],
   );
@@ -46,10 +49,10 @@ export default function FilterTrack() {
           исполнителю
         </div>
         {openFilterListModal && filterListByKey === 'name' && (
-          <FilterList keyOfList={filterListByKey} />
+          <FilterList tracks={tracks} keyOfList={filterListByKey} />
         )}
         {openFilterListModal && filterListByKey === 'name' && (
-          <FilterLengthList lengthList={filterListByKey} />
+          <FilterLengthList tracks={tracks} lengthList={filterListByKey} />
         )}
       </div>
 
@@ -87,10 +90,10 @@ export default function FilterTrack() {
           жанру
         </div>
         {openFilterListModal && filterListByKey === 'genre' && (
-          <FilterList keyOfList={filterListByKey} />
+          <FilterList tracks={tracks} keyOfList={filterListByKey} />
         )}
         {openFilterListModal && filterListByKey === 'genre' && (
-          <FilterLengthList lengthList={filterListByKey} />
+          <FilterLengthList tracks={tracks} lengthList={filterListByKey} />
         )}
       </div>
     </div>

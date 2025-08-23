@@ -59,7 +59,10 @@ export default function AuthForm({ isSignUp }: AuthFormProp) {
                 </button>
               )}
               {!isSignUp && (
-                <Link href={'/sign-up'} className={styles.modal__btnSignup}>
+                <Link
+                  href={'/auth/sign-up'}
+                  className={styles.modal__btnSignup}
+                >
                   Зарегистрироваться
                 </Link>
               )}

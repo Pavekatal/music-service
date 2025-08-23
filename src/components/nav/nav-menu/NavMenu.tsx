@@ -17,7 +17,7 @@ export default function NavMenu() {
           </Link>
         </li>
         <li className={styles.menu__item}>
-          <Link href="../sign-in" className={styles.menu__link}>
+          <Link href="../../../auth/sign-in/" className={styles.menu__link}>
             Войти
           </Link>
         </li>
