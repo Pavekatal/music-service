@@ -4,14 +4,8 @@ import styles from './centerblock.module.css';
 import Search from '@components/search/Search';
 import Track from '@components/track-card/Track';
 import FilterTrack from '@components/filter-track/FilterTrack';
-// import { TrackType } from '@shared-types/SharedTypes';
 import { useAppSelector } from '../../store/store';
 import Loader from '@components/loader/Loader';
-// import { useEffect, useState } from 'react';
-
-// type centerBlockProps = {
-//   tracks: TrackType[];
-// };
 
 export default function CenterBlock() {
   const isLoading = useAppSelector((state) => state.loading.isLoading);
@@ -19,15 +13,8 @@ export default function CenterBlock() {
     (state) => state.tracks.currentPlaylist,
   );
   const titlePlaylist = useAppSelector((state) => state.tracks.titlePlaylist);
+  const errorMessage = useAppSelector((state) => state.tracks.errorMessage);
   // const [isLoading, setIsLoading] = useState(true);
-  console.log('isLoading from centerblock:', isLoading);
-  console.log('currentPlaylist from category:', currentPlaylist);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 3000);
-  // }, []);
 
   return (
     <div className={styles.centerblock}>
@@ -58,17 +45,17 @@ export default function CenterBlock() {
         </div>
 
         <div className={styles.content__playlist}>
-          {isLoading
-            ? Array.from({ length: 10 }).map((_, index) => (
-                <Loader width="100%" height={30} key={index} />
-              ))
-            : currentPlaylist.map((track) => (
-                <Track
-                  key={track._id}
-                  track={track}
-                  playlist={currentPlaylist}
-                />
-              ))}
+          {isLoading ? (
+            Array.from({ length: 10 }).map((_, index) => (
+              <Loader width="100%" height={30} key={index} />
+            ))
+          ) : errorMessage ? (
+            <div className={styles.error__message}>{errorMessage}</div>
+          ) : (
+            currentPlaylist.map((track) => (
+              <Track key={track._id} track={track} playlist={currentPlaylist} />
+            ))
+          )}
         </div>
       </div>
     </div>

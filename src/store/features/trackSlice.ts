@@ -10,6 +10,8 @@ type initialStateType = {
   titlePlaylist: string;
   isShuffle: boolean;
   shuffledPlaylist: TrackType[];
+  allTracks: TrackType[];
+  errorMessage: string;
 };
 
 // создаем состояния по умолчанию
@@ -21,6 +23,8 @@ const initialState: initialStateType = {
   titlePlaylist: '',
   isShuffle: false,
   shuffledPlaylist: [],
+  allTracks: [],
+  errorMessage: '',
 };
 // создаем срез состояния с именем tracks, включающий в себя состояние по умолчанию initialState и редьюсеры setCurrentTrack, setIsPlay, setCurrentTime, setCurrentPlaylist, setIsShuffle:
 const trackSlice = createSlice({
@@ -61,6 +65,12 @@ const trackSlice = createSlice({
     setTitlePlaylist: (state, action: PayloadAction<string>) => {
       state.titlePlaylist = action.payload;
     },
+    setAllTracks: (state, action: PayloadAction<TrackType[]>) => {
+      state.allTracks = action.payload;
+    },
+    setErrorMessage: (state, action: PayloadAction<string>) => {
+      state.errorMessage = action.payload;
+    },
     setNextTrack: (state) => {
       const playlist = state.isShuffle
         ? state.shuffledPlaylist
@@ -97,6 +107,8 @@ export const {
   setCurrentTime,
   setCurrentPlaylist,
   setTitlePlaylist,
+  setAllTracks,
+  setErrorMessage,
   setNextTrack,
   setPrevTrack,
   setIsShuffle,
