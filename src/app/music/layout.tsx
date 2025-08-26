@@ -17,6 +17,7 @@ import {
   setTitlePlaylist,
 } from '../../store/features/trackSlice';
 import { AxiosError } from 'axios';
+import { useInitAuth } from '../../hooks/useInitAuth';
 
 interface MusicLayoutProps {
   children: ReactNode;
@@ -178,6 +179,8 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
       dispatch(setTitlePlaylist(selectionTracks.name));
     }
   }, [dispatch, allTracks, selectionTracks]);
+
+  useInitAuth();
 
   return (
     <>

@@ -1,16 +1,19 @@
 'use client';
-// import AuthForm from '@components/auth-form/AuthForm';
 
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './signin.module.css';
 import classNames from 'classnames';
 import { useState } from 'react';
-import { login } from '../../../services/auth/authApi';
+import { getTokens, login } from '../../../services/auth/authApi';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
-import { setCurrentUser } from '../../../store/features/userSlice';
+import {
+  setAccessToken,
+  setCurrentUser,
+  setRefreshToken,
+} from '../../../store/features/userSlice';
 import { setIsLoading } from '../../../store/features/loadingSlice';
 
 export default function SignInPage() {
@@ -18,7 +21,6 @@ export default function SignInPage() {
   const isLoading = useAppSelector((state) => state.loading.isLoading);
   const [authField, setAuthField] = useState({ email: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
-  // const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const onChangeUserData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,12 +39,15 @@ export default function SignInPage() {
     }
 
     dispatch(setIsLoading(true));
-    // setIsLoading(true);
     login(authField)
       .then((res) => {
-        console.log(res);
         dispatch(setCurrentUser(res));
-        localStorage.setItem('user', JSON.stringify(res));
+        return getTokens(authField);
+      })
+      .then((resToken) => {
+        console.log('resToken:', resToken);
+        dispatch(setAccessToken(resToken.access));
+        dispatch(setRefreshToken(resToken.refresh));
         router.push('/music/main');
       })
       .catch((error) => {
@@ -63,15 +68,11 @@ export default function SignInPage() {
       })
       .finally(() => {
         dispatch(setIsLoading(false));
-        // setIsLoading(false);
       });
   };
-  console.log('isLoading после нажатия кнопки:', isLoading);
 
   return (
     <>
-      {/* <AuthForm isSignUp={false} /> */}
-
       <a href="/music/main">
         <div className={styles.modal__logo}>
           <Image src="/img/logo_modal.png" alt="logo" width={140} height={21} />

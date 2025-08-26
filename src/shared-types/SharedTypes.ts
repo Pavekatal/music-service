@@ -22,3 +22,13 @@ export type UserType = {
   username: string;
   _id: number;
 };
+
+export type accessTokenType = {
+  access: string;
+};
+
+export type refreshTokenType = {
+  refresh: string;
+};
+
+export type tokenTypes = accessTokenType & refreshTokenType;
