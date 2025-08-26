@@ -3,16 +3,16 @@
 import CenterBlock from '@components/centerblock/CenterBlock';
 import { useAppSelector } from '../../../store/store';
 
-export default function Home() {
-  const isLoading = useAppSelector((state) => state.loading.isLoading);
-  const { allTracks, titlePlaylist, errorMessage } = useAppSelector(
+export default function FavoritePage() {
+  const { favoriteTracks, titlePlaylist, errorMessage } = useAppSelector(
     (state) => state.tracks,
   );
+  const isLoading = useAppSelector((state) => state.loading.isLoading);
 
   return (
     <CenterBlock
       isLoading={isLoading}
-      tracks={allTracks}
+      tracks={favoriteTracks}
       title={titlePlaylist}
       errorMessage={errorMessage}
     />
