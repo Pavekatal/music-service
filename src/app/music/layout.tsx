@@ -43,6 +43,7 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
   useEffect(() => {
     dispatch(setIsLoading(true));
     if (pathname === '/music/main') {
+      dispatch(setErrorMessage(''));
       getTracks()
         .then((res) => {
           dispatch(setAllTracks(res));
@@ -74,6 +75,7 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
 
   useEffect(() => {
     if (params.id && pathname.startsWith('/music/category/')) {
+      dispatch(setErrorMessage(''));
       dispatch(setIsLoading(true));
       getSelectionTracks(params.id)
         .then((res) => {
@@ -122,12 +124,14 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
     dispatch(setIsLoading(true));
 
     if (pathname === '/music/favorite') {
+      dispatch(setErrorMessage(''));
       withReauth(
         () =>
           getFavoriteTracks(access)
             .then((res) => {
               dispatch(setFavoriteTracks(res));
               dispatch(setTitlePlaylist('Мой плейлист'));
+              dispatch(setErrorMessage(''));
             })
             .catch((error) => {
               if (error instanceof AxiosError) {

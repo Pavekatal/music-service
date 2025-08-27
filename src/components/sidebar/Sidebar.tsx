@@ -16,7 +16,7 @@ export default function Sidebar() {
 
   const onClickLogout = () => {
     dispatch(logout());
-    router.push('/auth/sign-in');
+    router.push('/music/main');
   };
 
   return (

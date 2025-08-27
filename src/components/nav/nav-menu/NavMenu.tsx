@@ -13,6 +13,10 @@ export default function NavMenu() {
 
   const onClickLogout = () => {
     dispatch(logout());
+    router.push('/music/main');
+  };
+
+  const onClickToLogin = () => {
     router.push('/auth/sign-in');
   };
 
@@ -31,9 +35,15 @@ export default function NavMenu() {
             </Link>
           </li>
         ) : null}
-        <li onClick={onClickLogout} className={styles.menu__item}>
-          <p className={styles.menu__link}>{access ? 'Выйти' : 'Войти'}</p>
-        </li>
+        {access ? (
+          <li onClick={onClickLogout} className={styles.menu__item}>
+            <p className={styles.menu__link}>Выйти</p>
+          </li>
+        ) : (
+          <li onClick={onClickToLogin} className={styles.menu__item}>
+            <p className={styles.menu__link}>Войти</p>
+          </li>
+        )}
       </ul>
     </div>
   );
