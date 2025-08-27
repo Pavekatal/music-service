@@ -11,7 +11,7 @@ export const getTracks = async (): Promise<TrackType[]> => {
 export const getSelectionTracks = async (
   selectionId: string,
 ): Promise<SelectionTrackType> => {
-  return await axios(BASE_URL + `/catalog/selection/${selectionId}/`).then(
+  return await axios(BASE_URL + `/catalog/selection/${+selectionId + 1}/`).then(
     (res) => {
       return res.data.data;
     },

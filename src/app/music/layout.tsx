@@ -41,14 +41,12 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    console.log('pathname first:', pathname);
     dispatch(setIsLoading(true));
     if (pathname === '/music/main') {
       getTracks()
         .then((res) => {
           dispatch(setAllTracks(res));
           dispatch(setTitlePlaylist('Треки'));
-          console.log('tracks from All Track Request');
         })
         .catch((error) => {
           if (error instanceof AxiosError) {
@@ -71,7 +69,11 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
         .finally(() => {
           dispatch(setIsLoading(false));
         });
-    } else if (params.id && pathname.startsWith('/music/category/')) {
+    }
+  }, [dispatch, pathname]);
+
+  useEffect(() => {
+    if (params.id && pathname.startsWith('/music/category/')) {
       dispatch(setIsLoading(true));
       getSelectionTracks(params.id)
         .then((res) => {
@@ -104,7 +106,7 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
   }, [dispatch, pathname, params.id]);
 
   useEffect(() => {
-    if (selectionTracks) {
+    if (selectionTracks && pathname.startsWith('/music/category/')) {
       if (!allTracks.length) {
         setErrorMessage('Не удалось получить список треков');
       }
@@ -114,7 +116,7 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
       dispatch(setCollectionTracks(selection));
       dispatch(setTitlePlaylist(selectionTracks.name));
     }
-  }, [dispatch, allTracks, selectionTracks]);
+  }, [dispatch, pathname, allTracks, selectionTracks]);
 
   useEffect(() => {
     dispatch(setIsLoading(true));
