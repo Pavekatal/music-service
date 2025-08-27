@@ -20,8 +20,8 @@ type TrackProp = {
 
 export default function Track({ track, playlist }: TrackProp) {
   const dispatch = useAppDispatch();
-  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
-  const isPlay = useAppSelector((state) => state.tracks.isPlay);
+  const { currentTrack, isPlay } = useAppSelector((state) => state.tracks);
+  const { access } = useAppSelector((state) => state.users);
   const { toggleLike, isLike } = useLikeTrack(track);
 
   const onClickTrack = () => {
@@ -34,7 +34,12 @@ export default function Track({ track, playlist }: TrackProp) {
     e: React.MouseEvent<SVGSVGElement, MouseEvent>,
   ) => {
     e.stopPropagation();
-    toggleLike();
+    if (access) {
+      toggleLike();
+    } else {
+      alert('Чтобы добавить или удалить лайк, необходимо авторизоваться');
+      return;
+    }
   };
 
   return (

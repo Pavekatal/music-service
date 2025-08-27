@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './signin.module.css';
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getTokens, login } from '../../../services/auth/authApi';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
@@ -22,6 +22,10 @@ export default function SignInPage() {
   const [authField, setAuthField] = useState({ email: '', password: '' });
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
+
+  useEffect(() => {
+    dispatch(setIsLoading(false));
+  }, [dispatch]);
 
   const onChangeUserData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,7 +49,6 @@ export default function SignInPage() {
         return getTokens(authField);
       })
       .then((resToken) => {
-        console.log('resToken:', resToken);
         dispatch(setAccessToken(resToken.access));
         dispatch(setRefreshToken(resToken.refresh));
         router.push('/music/main');

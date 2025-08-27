@@ -1,17 +1,20 @@
 'use client';
 
-// import AuthForm from '@components/auth-form/AuthForm';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './signup.module.css';
 import classNames from 'classnames';
-import { useState } from 'react';
-import { registration } from '../../../services/auth/authApi';
+import { useEffect, useState } from 'react';
+import { getTokens, registration } from '../../../services/auth/authApi';
 import { AxiosError } from 'axios';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { useRouter } from 'next/navigation';
-import { setCurrentUser } from '../../../store/features/userSlice';
+import {
+  setAccessToken,
+  setCurrentUser,
+  setRefreshToken,
+} from '../../../store/features/userSlice';
+import { setIsLoading } from '../../../store/features/loadingSlice';
 
 export default function SignUpPage() {
   const dispatch = useAppDispatch();
@@ -24,6 +27,10 @@ export default function SignUpPage() {
     newpassword: '',
   });
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    dispatch(setIsLoading(false));
+  }, [dispatch]);
 
   const onChangeDataField = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,11 +61,16 @@ export default function SignUpPage() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { newpassword, ...dataToSend } = dataField;
 
+    dispatch(setIsLoading(true));
     registration(dataToSend)
       .then((res) => {
-        console.log(res);
         dispatch(setCurrentUser(res));
-        localStorage.setItem('user', JSON.stringify(res));
+        return getTokens(dataToSend);
+      })
+      .then((resToken) => {
+        dispatch(setAccessToken(resToken.access));
+        dispatch(setRefreshToken(resToken.refresh));
+        console.log('resToken:', resToken);
         alert('Регистрация прошла успешно!');
         router.push('/music/main');
       })
@@ -96,13 +108,14 @@ export default function SignUpPage() {
             setErrorMessage('Возникла неизвестная ошибка, попробуйте позже');
           }
         }
+      })
+      .finally(() => {
+        dispatch(setIsLoading(false));
       });
   };
 
   return (
     <>
-      {/* <AuthForm isSignUp={true} /> */}
-
       <Link href="/music/main">
         <div className={styles.modal__logo}>
           <Image src="/img/logo_modal.png" alt="logo" width={140} height={21} />
