@@ -44,7 +44,13 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
     dispatch(setIsLoading(true));
     if (pathname === '/music/main') {
       dispatch(setErrorMessage(''));
-      getTracks()
+      const fetchTracks = async () => {
+        if (access) {
+          return await withReauth(() => getTracks(), refresh, dispatch);
+        }
+        return await getTracks();
+      };
+      fetchTracks()
         .then((res) => {
           dispatch(setAllTracks(res));
           dispatch(setTitlePlaylist('Треки'));
@@ -71,13 +77,23 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
           dispatch(setIsLoading(false));
         });
     }
-  }, [dispatch, pathname]);
+  }, [dispatch, pathname, access, refresh]);
 
   useEffect(() => {
     if (params.id && pathname.startsWith('/music/category/')) {
       dispatch(setErrorMessage(''));
       dispatch(setIsLoading(true));
-      getSelectionTracks(params.id)
+      const fetchSelectionTracks = async () => {
+        if (access) {
+          return await withReauth(
+            () => getSelectionTracks(params.id),
+            refresh,
+            dispatch,
+          );
+        }
+        return await getSelectionTracks(params.id);
+      };
+      fetchSelectionTracks()
         .then((res) => {
           setSelectionTracks(res);
         })
@@ -105,7 +121,7 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
           dispatch(setIsLoading(false));
         });
     }
-  }, [dispatch, pathname, params.id]);
+  }, [dispatch, pathname, params.id, access, refresh]);
 
   useEffect(() => {
     if (selectionTracks && pathname.startsWith('/music/category/')) {
@@ -125,38 +141,33 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
 
     if (pathname === '/music/favorite') {
       dispatch(setErrorMessage(''));
-      withReauth(
-        () =>
-          getFavoriteTracks(access)
-            .then((res) => {
-              dispatch(setFavoriteTracks(res));
-              dispatch(setTitlePlaylist('Мой плейлист'));
-              dispatch(setErrorMessage(''));
-            })
-            .catch((error) => {
-              if (error instanceof AxiosError) {
-                if (error.response) {
-                  dispatch(setErrorMessage(error.response.data.message));
-                  console.log(error.response.data);
-                } else if (error.request) {
-                  dispatch(
-                    setErrorMessage(
-                      'Похоже, что-то с интернет-соединением. Попробуйте позже',
-                    ),
-                  );
-                } else {
-                  setErrorMessage(
-                    'Неизвестная ошибка. Попробуйте перезагрузить страницу',
-                  );
-                }
-              }
-            })
-            .finally(() => {
-              dispatch(setIsLoading(false));
-            }),
-        refresh,
-        dispatch,
-      );
+      withReauth(() => getFavoriteTracks(access), refresh, dispatch)
+        .then((res) => {
+          dispatch(setFavoriteTracks(res));
+          dispatch(setTitlePlaylist('Мой плейлист'));
+          dispatch(setErrorMessage(''));
+        })
+        .catch((error) => {
+          if (error instanceof AxiosError) {
+            if (error.response) {
+              dispatch(setErrorMessage(error.response.data.message));
+              console.log(error.response.data);
+            } else if (error.request) {
+              dispatch(
+                setErrorMessage(
+                  'Похоже, что-то с интернет-соединением. Попробуйте позже',
+                ),
+              );
+            } else {
+              setErrorMessage(
+                'Неизвестная ошибка. Попробуйте перезагрузить страницу',
+              );
+            }
+          }
+        })
+        .finally(() => {
+          dispatch(setIsLoading(false));
+        });
     }
   }, [dispatch, pathname, access, refresh]);
 

@@ -238,7 +238,7 @@ export default function Bar() {
                 >
                   <svg className={styles.trackPlay__likeSvg}>
                     <use
-                      xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-like' : 'icon-dislike'}`}
+                      xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-dislike' : 'icon-like'}`}
                     ></use>
                   </svg>
                 </div>
