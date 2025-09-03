@@ -10,6 +10,10 @@ type initialStateType = {
   titlePlaylist: string;
   isShuffle: boolean;
   shuffledPlaylist: TrackType[];
+  allTracks: TrackType[];
+  collectionTracks: TrackType[];
+  favoriteTracks: TrackType[];
+  errorMessage: string;
 };
 
 // создаем состояния по умолчанию
@@ -21,6 +25,10 @@ const initialState: initialStateType = {
   titlePlaylist: '',
   isShuffle: false,
   shuffledPlaylist: [],
+  allTracks: [],
+  collectionTracks: [],
+  favoriteTracks: [],
+  errorMessage: '',
 };
 // создаем срез состояния с именем tracks, включающий в себя состояние по умолчанию initialState и редьюсеры setCurrentTrack, setIsPlay, setCurrentTime, setCurrentPlaylist, setIsShuffle:
 const trackSlice = createSlice({
@@ -61,6 +69,26 @@ const trackSlice = createSlice({
     setTitlePlaylist: (state, action: PayloadAction<string>) => {
       state.titlePlaylist = action.payload;
     },
+    setAllTracks: (state, action: PayloadAction<TrackType[]>) => {
+      state.allTracks = action.payload;
+    },
+    setCollectionTracks: (state, action: PayloadAction<TrackType[]>) => {
+      state.collectionTracks = action.payload;
+    },
+    setFavoriteTracks: (state, action: PayloadAction<TrackType[]>) => {
+      state.favoriteTracks = action.payload;
+    },
+    addLikedTracks: (state, action: PayloadAction<TrackType>) => {
+      state.favoriteTracks = [...state.favoriteTracks, action.payload];
+    },
+    removeLikedTracks: (state, action: PayloadAction<TrackType>) => {
+      state.favoriteTracks = state.favoriteTracks.filter(
+        (track) => track._id !== action.payload._id,
+      );
+    },
+    setErrorMessage: (state, action: PayloadAction<string>) => {
+      state.errorMessage = action.payload;
+    },
     setNextTrack: (state) => {
       const playlist = state.isShuffle
         ? state.shuffledPlaylist
@@ -97,6 +125,12 @@ export const {
   setCurrentTime,
   setCurrentPlaylist,
   setTitlePlaylist,
+  setAllTracks,
+  setCollectionTracks,
+  setFavoriteTracks,
+  addLikedTracks,
+  removeLikedTracks,
+  setErrorMessage,
   setNextTrack,
   setPrevTrack,
   setIsShuffle,

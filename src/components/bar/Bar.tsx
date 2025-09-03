@@ -16,13 +16,14 @@ import {
 import { getTimePanel } from '@utils/helper';
 import ProgressBar from '@components/progress-bar/ProgressBar';
 import Loader from '@components/loader/Loader';
+import { useLikeTrack } from '../../hooks/useLikeTracks';
 
 export default function Bar() {
-  const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
-  const isPlay = useAppSelector((state) => state.tracks.isPlay);
-  const currentTime = useAppSelector((state) => state.tracks.currentTime);
-  const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
+  const { currentTrack, isPlay, currentTime, isShuffle } = useAppSelector(
+    (state) => state.tracks,
+  );
   const isLoading = useAppSelector((state) => state.loading.isLoading);
+  const { access } = useAppSelector((state) => state.users);
   const dispatch = useAppDispatch();
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -30,6 +31,7 @@ export default function Bar() {
   const [isLoop, setIsLoop] = useState(false);
   const [isLoadedTrack, setIsLoadedTrack] = useState(false);
   const [volumeTrack, setVolumeTrack] = useState(20);
+  const { toggleLike, isLike } = useLikeTrack(currentTrack);
 
   useEffect(() => {
     setIsLoadedTrack(false);
@@ -102,8 +104,16 @@ export default function Bar() {
     dispatch(setNextTrack());
   };
 
-  const notYetImplemented = () => {
-    alert('Еще не реализовано');
+  const onClickToggleLike = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    e.stopPropagation();
+    if (access) {
+      toggleLike();
+    } else {
+      alert('Чтобы добавить или удалить лайк, необходимо авторизоваться');
+      return;
+    }
   };
 
   return (
@@ -224,22 +234,14 @@ export default function Bar() {
                     styles.player__btnShuffle,
                     styles.btnIcon,
                   )}
-                  onClick={notYetImplemented}
+                  onClick={onClickToggleLike}
                 >
                   <svg className={styles.trackPlay__likeSvg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
+                    <use
+                      xlinkHref={`/img/icon/sprite.svg#${isLike ? 'icon-dislike' : 'icon-like'}`}
+                    ></use>
                   </svg>
                 </div>
-                {/* <div
-                  className={classnames(
-                    styles.trackPlay__dislike,
-                    styles.btnIcon,
-                  )}
-                >
-                  <svg className={styles.trackPlay__dislikeSvg}>
-                    <use xlinkHref="/img/icon/sprite.svg#icon-dislike"></use>
-                  </svg>
-                </div> */}
               </div>
             </div>
           </div>

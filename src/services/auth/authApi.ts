@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { BASE_URL } from '../constants';
-import { UserType } from '@shared-types/SharedTypes';
+import {
+  accessTokenType,
+  tokenTypes,
+  UserType,
+} from '@shared-types/SharedTypes';
 
 type loginProps = {
   email: string;
@@ -32,5 +36,21 @@ export const registration = async (userData: regProps): Promise<UserType> => {
     })
     .then((res) => {
       return res.data.result;
+    });
+};
+
+export const getTokens = async (data: loginProps): Promise<tokenTypes> => {
+  return await axios.post(BASE_URL + '/user/token/', data).then((res) => {
+    return res.data;
+  });
+};
+
+export const refreshToken = async (
+  refresh: string,
+): Promise<accessTokenType> => {
+  return await axios
+    .post(BASE_URL + '/user/token/refresh/', { refresh })
+    .then((res) => {
+      return res.data;
     });
 };

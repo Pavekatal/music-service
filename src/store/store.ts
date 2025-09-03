@@ -21,7 +21,7 @@ export const makeStore = () => {
 export type AppStore = ReturnType<typeof makeStore>;
 // выведим типы \`RootState\` и \`AppDispatch\` из самого хранилища
 type RootState = ReturnType<AppStore['getState']>;
-type AppDispatch = AppStore['dispatch'];
+export type AppDispatch = AppStore['dispatch'];
 
 // используем во всем приложении вместо простоых \`useDispatch\` и \`useSelector\`
 // export const useAppDispatch = useDispatch.withTypes<AppDispatch>(); // чтобы вызывать редьюсеры
