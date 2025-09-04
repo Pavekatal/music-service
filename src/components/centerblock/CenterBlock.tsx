@@ -1,3 +1,5 @@
+'use client';
+
 import classnames from 'classnames';
 import styles from './centerblock.module.css';
 import Search from '@components/search/Search';
@@ -5,12 +7,16 @@ import Track from '@components/track-card/Track';
 import FilterTrack from '@components/filter-track/FilterTrack';
 import Loader from '@components/loader/Loader';
 import { TrackType } from '@shared-types/SharedTypes';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../store/store';
+import { setPagePlaylist } from '../../store/features/trackSlice';
 
 type CenterBlockProps = {
   isLoading: boolean;
   tracks: TrackType[];
   title: string;
   errorMessage: string;
+  pagePlaylist: TrackType[];
 };
 
 export default function CenterBlock({
@@ -18,7 +24,16 @@ export default function CenterBlock({
   tracks,
   title,
   errorMessage,
+  pagePlaylist,
 }: CenterBlockProps) {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!isLoading && !errorMessage) {
+      dispatch(setPagePlaylist(pagePlaylist));
+    }
+  }, [dispatch, isLoading, errorMessage, pagePlaylist]);
+
   return (
     <div className={styles.centerblock}>
       <Search />
@@ -28,7 +43,7 @@ export default function CenterBlock({
         <h2 className={styles.centerblock__h2}>{title}</h2>
       )}
 
-      <FilterTrack tracks={tracks} />
+      <FilterTrack tracks={pagePlaylist} />
       <div className={styles.centerblock__content}>
         <div className={styles.content__title}>
           <div className={classnames(styles.playlistTitle__col, styles.col01)}>

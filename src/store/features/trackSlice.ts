@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TrackType } from '@shared-types/SharedTypes';
+import { applyFilters } from '@utils/applyFilters';
 
 // задаем типизацию для состояний по умолчанию
-type initialStateType = {
+export type initialStateType = {
   currentTrack: null | TrackType; // состояние для текущего трека
   isPlay: boolean;
   currentTime: number;
@@ -11,9 +12,16 @@ type initialStateType = {
   isShuffle: boolean;
   shuffledPlaylist: TrackType[];
   allTracks: TrackType[];
+  filteredTracks: TrackType[];
   collectionTracks: TrackType[];
   favoriteTracks: TrackType[];
   errorMessage: string;
+  pagePlaylist: TrackType[];
+  filters: {
+    authors: string[];
+    genres: string[];
+    years: string;
+  };
 };
 
 // создаем состояния по умолчанию
@@ -26,9 +34,16 @@ const initialState: initialStateType = {
   isShuffle: false,
   shuffledPlaylist: [],
   allTracks: [],
+  filteredTracks: [],
   collectionTracks: [],
   favoriteTracks: [],
   errorMessage: '',
+  pagePlaylist: [],
+  filters: {
+    authors: [],
+    genres: [],
+    years: 'По умолчанию',
+  },
 };
 // создаем срез состояния с именем tracks, включающий в себя состояние по умолчанию initialState и редьюсеры setCurrentTrack, setIsPlay, setCurrentTime, setCurrentPlaylist, setIsShuffle:
 const trackSlice = createSlice({
@@ -115,6 +130,35 @@ const trackSlice = createSlice({
       }
       state.currentTrack = playlist[prevIndexTrack];
     },
+    setPagePlaylist: (state, action: PayloadAction<TrackType[]>) => {
+      state.pagePlaylist = action.payload;
+    },
+    setFilterAuthors: (state, action: PayloadAction<string>) => {
+      const author = action.payload;
+
+      if (state.filters.authors.includes(author)) {
+        state.filters.authors = state.filters.authors.filter((item) => {
+          return item !== author;
+        });
+      } else {
+        state.filters.authors = [...state.filters.authors, author];
+      }
+
+      state.filteredTracks = applyFilters(state);
+    },
+    setFilterGenres: (state, action: PayloadAction<string>) => {
+      const genres = action.payload;
+
+      if (state.filters.genres.includes(genres)) {
+        state.filters.genres = state.filters.genres.filter((item) => {
+          return item !== genres;
+        });
+      } else {
+        state.filters.genres = [...state.filters.genres, genres];
+      }
+
+      state.filteredTracks = applyFilters(state);
+    },
   },
 });
 
@@ -134,6 +178,9 @@ export const {
   setNextTrack,
   setPrevTrack,
   setIsShuffle,
+  setPagePlaylist,
+  setFilterAuthors,
+  setFilterGenres,
 } = trackSlice.actions;
 // экспортируем редюсеры
 export const trackSliceReducer = trackSlice.reducer;
