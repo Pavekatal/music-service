@@ -15,5 +15,20 @@ export const applyFilters = (state: initialStateType): TrackType[] => {
       return state.filters.genres.some((el) => track.genre.includes(el));
     });
   }
+
+  if (state.filters.years === 'Сначала новые') {
+    filteredPlaylist = filteredPlaylist.slice().sort((a, b) => {
+      return (
+        new Date(b.release_date).getTime() - new Date(a.release_date).getTime()
+      );
+    });
+  } else if (state.filters.years === 'Сначала старые') {
+    filteredPlaylist = filteredPlaylist.slice().sort((a, b) => {
+      return (
+        new Date(a.release_date).getTime() - new Date(b.release_date).getTime()
+      );
+    });
+  }
+
   return filteredPlaylist;
 };

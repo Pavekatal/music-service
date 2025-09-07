@@ -10,6 +10,7 @@ import { useAppDispatch } from '../../store/store';
 import {
   setFilterAuthors,
   setFilterGenres,
+  setSortingYears,
 } from '../../store/features/trackSlice';
 import { getUniqueValuesByKey } from '@utils/helper';
 
@@ -23,6 +24,7 @@ export default function FilterTrack({ tracks }: FilterTrackProp) {
   const [activeFilter, setActiveFilter] = useState(false);
   const [selectAuthors, setSelectAuthors] = useState<string[]>([]);
   const [selectGenres, setSelectGenres] = useState<string[]>([]);
+  const [selectYear, setSelectYear] = useState<string>('По умолчанию');
 
   const trackKeys = Object.keys(tracks) as (keyof TrackType)[];
   const [filterListByKey, setFilterListByKey] = useState<keyof TrackType>(
@@ -31,7 +33,7 @@ export default function FilterTrack({ tracks }: FilterTrackProp) {
 
   const uniqueAuthors = getUniqueValuesByKey(tracks, 'author');
   const uniqueGenres = getUniqueValuesByKey(tracks, 'genre');
-  const years = ['Сначала новые', 'Сначала старые', 'По умолчанию'];
+  const yearsValue = ['Сначала новые', 'Сначала старые', 'По умолчанию'];
 
   const onOpenFilterList = (key: keyof TrackType) => {
     setFilterListByKey(key);
@@ -69,6 +71,11 @@ export default function FilterTrack({ tracks }: FilterTrackProp) {
     });
   };
 
+  const onSelectYears = (year: string) => {
+    dispatch(setSortingYears(year));
+    setSelectYear(year);
+  };
+
   return (
     <div className={styles.centerblock__filter}>
       <div className={styles.filter__title}>Искать по:</div>
@@ -90,7 +97,7 @@ export default function FilterTrack({ tracks }: FilterTrackProp) {
           />
         )}
         {openFilterListModal && filterListByKey === 'name' && (
-          <FilterLengthList list={uniqueAuthors} />
+          <FilterLengthList list={selectAuthors} />
         )}
       </div>
 
@@ -105,13 +112,13 @@ export default function FilterTrack({ tracks }: FilterTrackProp) {
         </div>
         {openFilterListModal && filterListByKey === 'release_date' && (
           <FilterList
-            onSelect={onSelectAuthor}
-            selectItems={selectAuthors}
-            list={years}
+            onSelect={onSelectYears}
+            selectItems={[selectYear]}
+            list={yearsValue}
           />
         )}
         {openFilterListModal && filterListByKey === 'release_date' && (
-          <FilterLengthList list={selectAuthors} />
+          <FilterLengthList list={[selectYear]} />
         )}
       </div>
 
@@ -132,7 +139,7 @@ export default function FilterTrack({ tracks }: FilterTrackProp) {
           />
         )}
         {openFilterListModal && filterListByKey === 'genre' && (
-          <FilterLengthList list={uniqueGenres} />
+          <FilterLengthList list={selectGenres} />
         )}
       </div>
     </div>

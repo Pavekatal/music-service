@@ -159,6 +159,17 @@ const trackSlice = createSlice({
 
       state.filteredTracks = applyFilters(state);
     },
+    setSortingYears: (state, action: PayloadAction<string>) => {
+      state.filters.years = action.payload;
+      const filtered = applyFilters(state);
+      state.filteredTracks = filtered;
+      state.pagePlaylist = filtered;
+    },
+    resetFilters: (state) => {
+      state.filters.authors = [];
+      state.filters.genres = [];
+      state.filters.years = 'По умолчанию';
+    },
   },
 });
 
@@ -181,6 +192,8 @@ export const {
   setPagePlaylist,
   setFilterAuthors,
   setFilterGenres,
+  setSortingYears,
+  resetFilters,
 } = trackSlice.actions;
 // экспортируем редюсеры
 export const trackSliceReducer = trackSlice.reducer;
