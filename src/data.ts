@@ -132,4 +132,43 @@ export const data: TrackType[] = [
       'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Winniethemoog_-_Action_Sport_Breakbeat.mp3',
     stared_user: [],
   },
+  {
+    _id: 68,
+    name: 'Chase',
+    author: 'Alexander Nakarada',
+    release_date: '2005-06-11',
+    genre: ['Классическая музыка'],
+    duration_in_seconds: 205,
+    album: 'Chase',
+    logo: null,
+    track_file:
+      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Alexander_Nakarada_-_Chase.mp3',
+    stared_user: [],
+  },
+  {
+    _id: 33,
+    name: 'Open Sea epic',
+    author: 'Frank Schroter',
+    release_date: '2019-06-12',
+    genre: [],
+    duration_in_seconds: 165,
+    album: 'Open Sea epic',
+    logo: null,
+    track_file:
+      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Frank_Schroter_-_Open_Sea_epic.mp3',
+    stared_user: [],
+  },
+  {
+    _id: 88,
+    name: '',
+    author: '',
+    release_date: '2022-04-16',
+    genre: [''],
+    duration_in_seconds: 305,
+    album: 'Sneaky Snitch',
+    logo: null,
+    track_file:
+      'https://webdev-music-003b5b991590.herokuapp.com/media/music_files/Kevin_Macleod_-_Sneaky_Snitch.mp3',
+    stared_user: [],
+  },
 ];
