@@ -12,6 +12,7 @@ import {
 } from '../../store/features/trackSlice';
 import classNames from 'classnames';
 import { useLikeTrack } from '../../hooks/useLikeTracks';
+import { toast } from 'react-toastify';
 
 type TrackProp = {
   track: TrackType;
@@ -37,7 +38,7 @@ export default function Track({ track, playlist }: TrackProp) {
     if (access) {
       toggleLike();
     } else {
-      alert('Чтобы добавить или удалить лайк, необходимо авторизоваться');
+      toast('Чтобы добавить или удалить лайк, необходимо авторизоваться');
       return;
     }
   };

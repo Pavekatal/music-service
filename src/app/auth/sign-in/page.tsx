@@ -56,15 +56,12 @@ export default function SignInPage() {
       .catch((error) => {
         if (error instanceof AxiosError) {
           if (error.response) {
-            console.log(error.response.data);
             setErrorMessage(error.response.data.message);
           } else if (error.request) {
-            console.log(error.request);
             setErrorMessage(
               'Похоже, что-то с интернет-подключением... Попробуйте позже',
             );
           } else {
-            console.log('Error', error.message);
             setErrorMessage('Возникла неизвестная ошибка, попробуйте позже');
           }
         }
