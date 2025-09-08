@@ -22,6 +22,7 @@ export type initialStateType = {
     genres: string[];
     years: string;
   };
+  searchTrack: string;
 };
 
 // создаем состояния по умолчанию
@@ -44,6 +45,7 @@ const initialState: initialStateType = {
     genres: [],
     years: 'По умолчанию',
   },
+  searchTrack: '',
 };
 // создаем срез состояния с именем tracks, включающий в себя состояние по умолчанию initialState и редьюсеры setCurrentTrack, setIsPlay, setCurrentTime, setCurrentPlaylist, setIsShuffle:
 const trackSlice = createSlice({
@@ -170,6 +172,9 @@ const trackSlice = createSlice({
       state.filters.genres = [];
       state.filters.years = 'По умолчанию';
     },
+    setSearchTrack: (state, action: PayloadAction<string>) => {
+      state.searchTrack = action.payload;
+    },
   },
 });
 
@@ -194,6 +199,7 @@ export const {
   setFilterGenres,
   setSortingYears,
   resetFilters,
+  setSearchTrack,
 } = trackSlice.actions;
 // экспортируем редюсеры
 export const trackSliceReducer = trackSlice.reducer;

@@ -4,12 +4,19 @@ import CenterBlock from '@components/centerblock/CenterBlock';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { useEffect, useMemo } from 'react';
 import { resetFilters } from '../../../store/features/trackSlice';
+import { applySearch } from '@utils/applySearch';
 
 export default function Home() {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector((state) => state.loading.isLoading);
-  const { allTracks, titlePlaylist, errorMessage, filteredTracks, filters } =
-    useAppSelector((state) => state.tracks);
+  const {
+    allTracks,
+    titlePlaylist,
+    errorMessage,
+    filteredTracks,
+    filters,
+    searchTrack,
+  } = useAppSelector((state) => state.tracks);
 
   useEffect(() => {
     dispatch(resetFilters());
@@ -21,8 +28,16 @@ export default function Home() {
       filters.genres.length > 0 ||
       filters.years !== 'По умолчанию';
 
-    return hasFilters ? filteredTracks : allTracks;
-  }, [allTracks, filteredTracks, filters]);
+    if (hasFilters && !searchTrack.trim()) {
+      return filteredTracks;
+    } else if (hasFilters && searchTrack.trim()) {
+      return applySearch(filteredTracks, searchTrack);
+    } else if (!hasFilters && searchTrack.trim()) {
+      return applySearch(allTracks, searchTrack);
+    } else {
+      return allTracks;
+    }
+  }, [allTracks, filteredTracks, filters, searchTrack]);
 
   return (
     <CenterBlock

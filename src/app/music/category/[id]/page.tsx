@@ -4,6 +4,7 @@ import CenterBlock from '@components/centerblock/CenterBlock';
 import { useAppDispatch, useAppSelector } from '../../../../store/store';
 import { resetFilters } from '../../../../store/features/trackSlice';
 import { useEffect, useMemo } from 'react';
+import { applySearch } from '@utils/applySearch';
 
 export default function CategoryPage() {
   const dispatch = useAppDispatch();
@@ -14,6 +15,7 @@ export default function CategoryPage() {
     errorMessage,
     filteredTracks,
     filters,
+    searchTrack,
   } = useAppSelector((state) => state.tracks);
 
   useEffect(() => {
@@ -26,8 +28,16 @@ export default function CategoryPage() {
       filters.genres.length > 0 ||
       filters.years !== 'По умолчанию';
 
-    return hasFilters ? filteredTracks : collectionTracks;
-  }, [collectionTracks, filteredTracks, filters]);
+    if (hasFilters && !searchTrack.trim()) {
+      return filteredTracks;
+    } else if (hasFilters && searchTrack.trim()) {
+      return applySearch(filteredTracks, searchTrack);
+    } else if (!hasFilters && searchTrack.trim()) {
+      return applySearch(collectionTracks, searchTrack);
+    } else {
+      return collectionTracks;
+    }
+  }, [collectionTracks, filteredTracks, filters, searchTrack]);
 
   return (
     <CenterBlock
