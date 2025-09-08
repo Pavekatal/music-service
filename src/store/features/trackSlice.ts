@@ -4,7 +4,7 @@ import { applyFilters } from '@utils/applyFilters';
 
 // задаем типизацию для состояний по умолчанию
 export type initialStateType = {
-  currentTrack: null | TrackType; // состояние для текущего трека
+  currentTrack: null | TrackType;
   isPlay: boolean;
   currentTime: number;
   currentPlaylist: TrackType[];
@@ -47,7 +47,7 @@ const initialState: initialStateType = {
   },
   searchTrack: '',
 };
-// создаем срез состояния с именем tracks, включающий в себя состояние по умолчанию initialState и редьюсеры setCurrentTrack, setIsPlay, setCurrentTime, setCurrentPlaylist, setIsShuffle:
+// создаем срез состояния с именем tracks, включающий в себя состояния по умолчанию initialState и редьюсеры:
 const trackSlice = createSlice({
   name: 'tracks',
   initialState,

@@ -4,7 +4,7 @@ import CenterBlock from '@components/centerblock/CenterBlock';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { useEffect, useMemo } from 'react';
 import { resetFilters } from '../../../store/features/trackSlice';
-import { applySearch } from '@utils/applySearch';
+import { getPlaylist } from '@utils/getPlaylist';
 
 export default function FavoritePage() {
   const dispatch = useAppDispatch();
@@ -23,20 +23,7 @@ export default function FavoritePage() {
   }, [dispatch]);
 
   const playlist = useMemo(() => {
-    const hasFilters =
-      filters.authors.length > 0 ||
-      filters.genres.length > 0 ||
-      filters.years !== 'По умолчанию';
-
-    if (hasFilters && !searchTrack.trim()) {
-      return filteredTracks;
-    } else if (hasFilters && searchTrack.trim()) {
-      return applySearch(filteredTracks, searchTrack);
-    } else if (!hasFilters && searchTrack.trim()) {
-      return applySearch(favoriteTracks, searchTrack);
-    } else {
-      return favoriteTracks;
-    }
+    return getPlaylist(favoriteTracks, filteredTracks, filters, searchTrack);
   }, [favoriteTracks, filteredTracks, filters, searchTrack]);
 
   return (

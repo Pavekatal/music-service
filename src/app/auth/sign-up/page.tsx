@@ -70,7 +70,6 @@ export default function SignUpPage() {
       .then((resToken) => {
         dispatch(setAccessToken(resToken.access));
         dispatch(setRefreshToken(resToken.refresh));
-        console.log('resToken:', resToken);
         alert('Регистрация прошла успешно!');
         router.push('/music/main');
       })

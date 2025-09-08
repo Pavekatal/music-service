@@ -27,7 +27,6 @@
 }
 
 .filter__button {
-  /*composes: btn-text from '/src/UI/Button/button.module.css';*/
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
