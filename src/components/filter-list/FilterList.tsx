@@ -1,20 +1,28 @@
-import { getUniqueValuesByKey } from '@utils/helper';
 import styles from './filterlist.module.css';
-import { TrackType } from '@shared-types/SharedTypes';
+import classNames from 'classnames';
 
 type FilterProp = {
-  keyOfList: keyof TrackType;
-  tracks: TrackType[];
+  list: string[];
+  onSelect: (value: string) => void;
+  selectItems: string[];
 };
 
-export default function FilterList({ keyOfList, tracks }: FilterProp) {
-  const filteredList = getUniqueValuesByKey(tracks, keyOfList);
-  console.log('filteredList:', filteredList);
+export default function FilterList({
+  list,
+  onSelect,
+  selectItems,
+}: FilterProp) {
   return (
     <div className={styles.filter__content}>
       <div className={styles.filter__list}>
-        {filteredList.map((item) => (
-          <p className={styles.filter__track} key={item}>
+        {list.map((item) => (
+          <p
+            className={classNames(styles.filter__track, {
+              [styles.selected]: selectItems.includes(item),
+            })}
+            key={item}
+            onClick={() => onSelect(item)}
+          >
             {item}
           </p>
         ))}

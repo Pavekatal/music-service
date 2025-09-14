@@ -21,6 +21,10 @@
   overflow-y: auto;
   flex-direction: column;
 
+  .selected {
+    color: rgb(182, 114, 255);
+  }
+
   &::-webkit-scrollbar {
     width: 4px;
   }

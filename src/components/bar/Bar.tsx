@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 import styles from './bar.module.css';
 import stylesImport from '../track-card/track.module.css';
 import classnames from 'classnames';
@@ -111,7 +112,7 @@ export default function Bar() {
     if (access) {
       toggleLike();
     } else {
-      alert('Чтобы добавить или удалить лайк, необходимо авторизоваться');
+      toast('Чтобы добавить или удалить лайк, необходимо авторизоваться');
       return;
     }
   };

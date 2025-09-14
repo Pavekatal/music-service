@@ -15,6 +15,7 @@ import {
   setRefreshToken,
 } from '../../../store/features/userSlice';
 import { setIsLoading } from '../../../store/features/loadingSlice';
+import { toast } from 'react-toastify';
 
 export default function SignUpPage() {
   const dispatch = useAppDispatch();
@@ -70,8 +71,7 @@ export default function SignUpPage() {
       .then((resToken) => {
         dispatch(setAccessToken(resToken.access));
         dispatch(setRefreshToken(resToken.refresh));
-        console.log('resToken:', resToken);
-        alert('Регистрация прошла успешно!');
+        toast('Регистрация прошла успешно!');
         router.push('/music/main');
       })
       .catch((error) => {
@@ -97,14 +97,11 @@ export default function SignUpPage() {
             if (errorResponseData.message) {
               setErrorMessage(errorResponseData.message);
             }
-            console.log(error.response.data);
           } else if (error.request) {
-            console.log(error.request);
             setErrorMessage(
               'Похоже, что-то с интернет-подключением... Попробуйте позже',
             );
           } else {
-            console.log('Error', error.message);
             setErrorMessage('Возникла неизвестная ошибка, попробуйте позже');
           }
         }

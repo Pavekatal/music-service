@@ -59,7 +59,6 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
           if (error instanceof AxiosError) {
             if (error.response) {
               dispatch(setErrorMessage(error.response.data));
-              console.log(error.response.data);
             } else if (error.request) {
               dispatch(
                 setErrorMessage(
@@ -101,7 +100,6 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
           if (error instanceof AxiosError) {
             if (error.response) {
               dispatch(setErrorMessage(error.response.data));
-              console.log(error.response.data);
             } else if (error.request) {
               dispatch(
                 setErrorMessage(
@@ -151,7 +149,6 @@ export default function MusicLayout({ children }: MusicLayoutProps) {
           if (error instanceof AxiosError) {
             if (error.response) {
               dispatch(setErrorMessage(error.response.data.message));
-              console.log(error.response.data);
             } else if (error.request) {
               dispatch(
                 setErrorMessage(
