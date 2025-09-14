@@ -26,10 +26,10 @@ export default function FilterTrack({ tracks }: FilterTrackProp) {
   const [selectGenres, setSelectGenres] = useState<string[]>([]);
   const [selectYear, setSelectYear] = useState<string>('По умолчанию');
 
-  const trackKeys = Object.keys(tracks) as (keyof TrackType)[];
-  const [filterListByKey, setFilterListByKey] = useState<keyof TrackType>(
-    trackKeys[1],
-  );
+  // const trackKeys = Object.keys(tracks) as (keyof TrackType)[];
+  const [filterListByKey, setFilterListByKey] = useState<
+    keyof TrackType | null
+  >(null);
 
   const uniqueAuthors = getUniqueValuesByKey(tracks, 'author');
   const uniqueGenres = getUniqueValuesByKey(tracks, 'genre');

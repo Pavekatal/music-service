@@ -10,12 +10,12 @@ const mockTracks: TrackType[] = data;
 const mockTrack: TrackType = data[0];
 
 describe('Track component', () => {
-  render(
-    <ReduxProvider>
-      <Track track={mockTrack} playlist={mockTracks} />
-    </ReduxProvider>,
-  );
   it('Рендер данных трека', () => {
+    render(
+      <ReduxProvider>
+        <Track track={mockTrack} playlist={mockTracks} />
+      </ReduxProvider>,
+    );
     expect(screen.getAllByText(mockTrack.author).length).toBeGreaterThan(0);
     expect(screen.getAllByText(mockTrack.name).length).toBeGreaterThan(0);
     expect(

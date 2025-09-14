@@ -165,7 +165,7 @@ const trackSlice = createSlice({
       state.filters.years = action.payload;
       const filtered = applyFilters(state);
       state.filteredTracks = filtered;
-      state.pagePlaylist = filtered;
+      // state.pagePlaylist = filtered;
     },
     resetFilters: (state) => {
       state.filters.authors = [];
